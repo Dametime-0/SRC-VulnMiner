@@ -59,9 +59,16 @@ pip install -r requirements.txt
 
 ### 2. 配置
 
-编辑 `config.yaml`：
-- LLM：配置你的 API（OpenAI 兼容协议），改 config.yaml 即可
-- 支持换模型：改 `model` 字段即可
+```bash
+# 复制配置模板
+cp config.example.yaml config.yaml     # Windows: copy config.example.yaml config.yaml
+cp .env.example .env                   # Windows: copy .env.example .env
+```
+
+然后编辑 `.env` 填入你的 API key，按需修改 `config.yaml`：
+- `llm.base_url`：API 端点（OpenAI 兼容协议，留空用官方端点）
+- `llm.model`：模型名
+- `llm.api_key`：通过 `.env` 的 `LLM_API_KEY` 读取
 
 ### 3. 运行演示
 
