@@ -1,0 +1,28 @@
+# Command Injection Detection Rules
+# ====================================
+
+vuln_type: command_injection
+severity: critical
+description: "Rules for detecting OS command injection vulnerabilities"
+
+patterns:
+  - id: CMDI_CODE_001
+    name: "Shell command execution with user input"
+    languages: [python, php, javascript, java, go, ruby]
+    confidence_base: 0.85
+    regex: "(?:os\\.(?:system|popen)|subprocess\\.(?:call|run|Popen).*shell\\s*=\\s*True|shell_exec|passthru|exec\\(|child_process\\.(?:exec|execSync|spawn|spawnSync)|Runtime\\.getRuntime\\(\\)\\.exec|system\\(|`\\s*\\$_GET)"
+    flags: [IGNORECASE]
+
+  - id: CMDI_CODE_002
+    name: "Dynamic code execution functions"
+    languages: [python, php, javascript]
+    confidence_base: 0.8
+    regex: "(?:eval|exec|compile)\\s*\\(\\s*(?:request\\.|input\\(|req\\.|\\$|window\\.)"
+    flags: [IGNORECASE]
+
+  - id: CMDI_CODE_003
+    name: "Subprocess with user-controlled args"
+    languages: [python]
+    confidence_base: 0.7
+    regex: "subprocess\\.(?:call|run)\\s*\\(\\s*(?:request\\.|input\\(|f[\"])"
+    flags: [IGNORECASE]

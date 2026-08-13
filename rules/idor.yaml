@@ -1,0 +1,27 @@
+# IDOR (Insecure Direct Object Reference) Detection Rules
+# ========================================================
+
+vuln_type: idor
+severity: medium
+description: "Rules for detecting Insecure Direct Object Reference vulnerabilities"
+
+patterns:
+  - id: IDOR_CODE_001
+    name: "Resource ID from user input without ownership check"
+    languages: [python, php, javascript, java, go]
+    confidence_base: 0.55
+    regex: "(?:\\.get|\\.filter|findById|getById|findOne|find_by_id)\\s*\\(\\s*(?:request\\.(?:args|form|json)|req\\.(?:params|body|query)|params\\[|body\\[)"
+    flags: [IGNORECASE]
+
+  - id: IDOR_CODE_002
+    name: "Database query with raw user ID"
+    languages: [php]
+    confidence_base: 0.55
+    regex: "WHERE\\s+\\w+\\s*=\\s*\\$_(?:GET|POST|REQUEST)\\["
+    flags: [IGNORECASE]
+
+  - id: IDOR_CODE_003
+    name: "Sequential resource ID in URL"
+    confidence_base: 0.3
+    regex: "/(?:user|order|account|profile|document|file|invoice)s?/\\d+"
+    flags: [IGNORECASE]

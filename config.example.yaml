@@ -1,0 +1,74 @@
+# ============================================================
+# SRC Vulnerability Mining Agent v2 — LLM驱动架构
+# 复制为 config.yaml 后按需修改
+# ============================================================
+
+# --- LLM 配置（OpenAI兼容协议，可接任意支持该协议的模型服务）---
+llm:
+  provider: "openai"              # openai | anthropic | custom
+  api_key: "${LLM_API_KEY}"       # 从 .env 读取
+  base_url: ""                    # 留空用官方端点，或填自建/第三方端点
+  model: "your-model-name"        # 替换为你的模型名
+  max_tokens: 8192                # 推理模型需要更多token（含思考过程）
+  temperature: 0.1
+  timeout: 60
+  max_retries: 1
+
+# --- Agent 行为 ---
+agent:
+  name: "SRC-VulnMiner"
+  version: "2.0.0"
+  max_rounds: 30                  # LLM驱动轮次上限
+  auto_switch_phase: true         # LLM可自主切换阶段
+
+# --- 阶段定义（LLM在阶段间流转）---
+phases:
+  - name: "task_parsing"          # 任务解析：目标、约束、子任务
+  - name: "info_collection"       # 信息采集：端点枚举、源码获取
+  - name: "analysis"              # 分析推理：规则扫描+LLM深度分析
+  - name: "verification"          # 验证执行：PoC构造与验证
+  - name: "reporting"             # 结果汇总：报告生成
+
+# --- 会话 ---
+session:
+  auto_save: true
+  output_dir: "output"
+  session_dir: "sessions"
+  max_findings: 50
+
+# --- 工具配置 ---
+tools:
+  http_request:
+    enabled: true
+    default_timeout: 10           # HTTP请求硬超时
+    max_body_bytes: 200000        # 响应体上限
+  python_exec:
+    enabled: true
+    audit: true                   # 审计每次Python执行
+    max_output_chars: 8000
+    timeout: 20                   # Python执行超时
+  rule_scan:
+    enabled: true
+    rules_dir: "rules/"
+
+# --- HTTP请求纪律 ---
+http:
+  timeout: 10                     # 秒
+  retries: 0                      # 零重试
+  rate_limit: 3.0                 # 每秒最多3个请求
+  user_agent: "SRC-VulnMiner/2.0 (Security Research Agent)"
+
+# --- 验证安全 ---
+verification:
+  safe_mode: true
+  skip_types: [path_traversal, command_injection]  # 会搞挂靶场的类型跳过实测
+  max_verification_requests: 3    # 每个漏洞最多3次验证请求
+
+# --- 报告 ---
+reporting:
+  output_dir: "output/"
+  formats: ["json", "markdown"]
+
+# --- 日志 ---
+logging:
+  level: "INFO"

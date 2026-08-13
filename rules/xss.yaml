@@ -1,0 +1,27 @@
+# XSS (Cross-Site Scripting) Detection Rules
+# ============================================
+
+vuln_type: xss
+severity: medium
+description: "Rules for detecting Cross-Site Scripting vulnerabilities"
+
+patterns:
+  - id: XSS_CODE_001
+    name: "Unescaped user output in HTML"
+    languages: [python, php, javascript, java, go]
+    confidence_base: 0.65
+    regex: "(?:innerHTML\\s*=|dangerouslySetInnerHTML|\\{\\{[^}]*\\|\\s*safe\\s*\\}\\}|echo\\s+\\$(?:GET|POST|REQUEST)\\[)"
+    flags: [IGNORECASE]
+
+  - id: XSS_CODE_002
+    name: "User input reflected without encoding"
+    languages: [python, php, javascript]
+    confidence_base: 0.5
+    regex: "request\\.(?:args|form|query|params)\\[?[\"']?\\w+[\"']?\\]?"
+    flags: [IGNORECASE]
+
+  - id: XSS_RESP_001
+    name: "Reflected script/event handler in response"
+    confidence_base: 0.6
+    regex: "(?:<script>alert\\(|<img[^>]+onerror\\s*=|on\\w+\\s*=\\s*[\"'][^\"']*alert)"
+    flags: [IGNORECASE]

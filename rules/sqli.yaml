@@ -1,0 +1,41 @@
+# SQL Injection Detection Rules
+# =============================
+
+vuln_type: sql_injection
+severity: high
+description: "Rules for detecting SQL injection vulnerabilities"
+
+patterns:
+  - id: SQLI_CODE_001
+    name: "String concatenation in SQL query"
+    languages: [python, php, java, javascript, go, ruby, csharp]
+    confidence_base: 0.7
+    regex: "(?:execute|query|raw|executemany)\\s*\\(\\s*[\"'](?:SELECT|INSERT|UPDATE|DELETE)"
+    flags: [IGNORECASE]
+
+  - id: SQLI_CODE_002
+    name: "SQL query with format/concatenation operators"
+    languages: [python, php]
+    confidence_base: 0.75
+    regex: "(?:execute|query|raw)\\s*\\(\\s*(?:f[\"']|[\"'].*?\\{|\".*?\"\\s*[+\\%])"
+    flags: [IGNORECASE]
+
+  - id: SQLI_CODE_003
+    name: "Cursor execute with variable not parameterized"
+    languages: [python]
+    confidence_base: 0.8
+    regex: "\\.(?:execute|executemany)\\s*\\(\\s*[\"'][^\"']*[\\%\\{][^\"']*[\"']"
+    flags: [IGNORECASE]
+
+  - id: SQLI_CODE_004
+    name: "F-string SQL query (dynamic SQL with variables)"
+    languages: [python]
+    confidence_base: 0.85
+    regex: "f[\"']\\s*(?:SELECT|INSERT|UPDATE|DELETE)\\b.*?\\{"
+    flags: [IGNORECASE]
+
+  - id: SQLI_RESP_001
+    name: "SQL error in HTTP response"
+    confidence_base: 0.85
+    regex: "(?:SQL syntax|mysql_|Unclosed quotation|quoted string not properly terminated|ORA-\\d{5}|PostgreSQL.*ERROR|SQLite.*error|near\\s+\".*?\":\\s+syntax error|unrecognized token:|SQL Server|SQLSTATE\\[\\d+\\]|You have an error in your SQL syntax|Microsoft OLE DB|Database error:|<!--\\s*DEBUG:\\s*SELECT)"
+    flags: [IGNORECASE]

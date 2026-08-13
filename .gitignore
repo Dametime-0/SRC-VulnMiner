@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Secrets
+.env
+config.yaml
+
+# Runtime artifacts
+output/
+sessions/
+*.log
+
+# Editors
+.vscode/
+.idea/

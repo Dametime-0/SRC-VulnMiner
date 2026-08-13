@@ -1,0 +1,34 @@
+# Path Traversal Detection Rules
+# =================================
+
+vuln_type: path_traversal
+severity: medium
+description: "Rules for detecting path/directory traversal vulnerabilities"
+
+patterns:
+  - id: TRAV_CODE_001
+    name: "User-controlled file path in file operations"
+    languages: [python, php, javascript, java, go]
+    confidence_base: 0.7
+    regex: "(?:open|read_file|send_file|send_from_directory|fopen|fread|file_get_contents|fs\\.(?:readFile|readFileSync|createReadStream)|new\\s+File(?:InputStream)?)\\s*\\(\\s*(?:request\\.|req\\.|\\$)"
+    flags: [IGNORECASE]
+
+  - id: TRAV_CODE_002
+    name: "PHP include/require with variable"
+    languages: [php]
+    confidence_base: 0.75
+    regex: "(?:include|require|include_once|require_once)\\s*\\(\\s*\\$"
+    flags: [IGNORECASE]
+
+  - id: TRAV_CODE_003
+    name: "Template path from user input"
+    languages: [python, php, javascript]
+    confidence_base: 0.75
+    regex: "render_template\\s*\\(\\s*request\\.(?:args|form)\\["
+    flags: [IGNORECASE]
+
+  - id: TRAV_RESP_001
+    name: "Path traversal indicators in response"
+    confidence_base: 0.8
+    regex: "(?:root:.*:0:0:|daemon:.*:1:1:|\\[fonts\\]|\\[extensions\\]|<title>Index of /|Directory listing for /)"
+    flags: [IGNORECASE]

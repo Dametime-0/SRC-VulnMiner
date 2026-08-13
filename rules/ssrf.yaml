@@ -1,0 +1,28 @@
+# SSRF (Server-Side Request Forgery) Detection Rules
+# ====================================================
+
+vuln_type: ssrf
+severity: medium
+description: "Rules for detecting Server-Side Request Forgery vulnerabilities"
+
+patterns:
+  - id: SSRF_CODE_001
+    name: "User-controlled URL in HTTP request"
+    languages: [python, php, javascript, java, go]
+    confidence_base: 0.7
+    regex: "(?:requests\\.(?:get|post|put|head)|urllib\\.(?:request\\.)?urlopen|file_get_contents|curl_setopt.*CURLOPT_URL|fetch\\(|axios\\.(?:get|post)|http\\.get|new\\s+URL)\\s*\\(\\s*(?:request\\.|user_|input|req\\.|params\\.|body\\.|\\$)"
+    flags: [IGNORECASE]
+
+  - id: SSRF_CODE_002
+    name: "User-controlled redirect URL"
+    languages: [python, php, javascript, java]
+    confidence_base: 0.65
+    regex: "(?:redirect|Redirect)\\s*\\(\\s*request\\.(?:args|form|query)"
+    flags: [IGNORECASE]
+
+  - id: SSRF_CODE_003
+    name: "PHP header redirect with variable"
+    languages: [php]
+    confidence_base: 0.6
+    regex: "header\\s*\\(\\s*[\"']Location:\\s*[\"']\\s*\\.\\s*\\$"
+    flags: [IGNORECASE]
