@@ -18,26 +18,26 @@ LLM驱动的端到端Web漏洞挖掘Agent — 参考 vulnclaw 架构重构。
 
 ```
 ┌─────────────────────────────────────────────────────┐
-│                LLM 推理引擎（可配置）                  │
-│   系统提示词：安全分析师角色 + 阶段说明 + 纪律约束        │
+│                LLM 推理引擎（可配置）                 │
+│   系统提示词：安全分析师角色 + 阶段说明 + 纪律约束      │
 └──────────────┬──────────────────────────────────────┘
                │ function-calling（每轮自主决策）
                ▼
 ┌─────────────────────────────────────────────────────┐
-│                 工具层（LLM的"手"）                    │
-│  http_request    HTTP请求（10s硬超时、零重试）          │
-│  python_exec     Python执行（审计记录，数据处理）        │
-│  rule_scan       规则引擎扫描（确定性漏洞模式）           │
-│  add_finding     记录漏洞发现                          │
-│  mark_verified   标记验证（L2证据）                     │
-│  switch_phase    阶段流转                              │
+│                 工具层（LLM的"手"）                   │
+│  http_request    HTTP请求（10s硬超时、零重试）         │
+│  python_exec     Python执行（审计记录，数据处理）      │
+│  rule_scan       规则引擎扫描（确定性漏洞模式）         │
+│  add_finding     记录漏洞发现                         │
+│  mark_verified   标记验证（L2证据）                    │
+│  switch_phase    阶段流转                             │
 │  read_source     读取源码                             │
-│  session_status  查看会话状态                          │
+│  session_status  查看会话状态                         │
 └──────────────┬──────────────────────────────────────┘
                │
                ▼
 ┌─────────────────────────────────────────────────────┐
-│              会话状态（JSON持久化）                     │
+│              会话状态（JSON持久化）                   │
 │  findings / executed_steps / notes / confirmed_facts │
 │  每轮自动保存 → sessions/ 目录                        │
 └─────────────────────────────────────────────────────┘
@@ -152,10 +152,10 @@ python tests/test_integration.py    # 6 tests
 
 | # | 漏洞 | 端点 | 实测验证 |
 |---|------|------|---------|
-| 1 | SQL注入 | POST /login (username) | ✅ `' OR '1'='1` 登录绕过 |
-| 2 | 反射XSS | GET /search?q= | ✅ script标签未编码反射 |
-| 3 | IDOR | GET /user/<id> | ✅ 无认证访问他人资料 |
-| 4 | SSRF | GET /fetch?url= | ✅ 服务器请求内部URL |
+| 1 | SQL注入 | POST /login (username) |  `' OR '1'='1` 登录绕过 |
+| 2 | 反射XSS | GET /search?q= |  script标签未编码反射 |
+| 3 | IDOR | GET /user/<id> |  无认证访问他人资料 |
+| 4 | SSRF | GET /fetch?url= |  服务器请求内部URL |
 | 5 | 路径遍历 | GET /view?file= | L1（跳过实测，避免搞挂靶场）|
 | 6 | 命令注入 | GET /ping?host= | L1（跳过实测，避免搞挂靶场）|
 
