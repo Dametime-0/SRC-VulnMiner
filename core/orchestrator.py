@@ -1,11 +1,11 @@
 """
-Orchestrator — LLM驱动的Agent主循环（参考 vulnclaw 设计）
+Orchestrator — LLM驱动的Agent主循环
 
 核心区别（vs 旧版固定Pipeline）：
 - LLM是驾驶员：每轮自主决定调用哪个工具
 - 阶段可流转：task_parsing → info_collection → analysis → verification → reporting
 - 每轮结束自动保存会话（可中断恢复）
-- LLM回复中包含 <thinking> 思考过程（vulnclaw风格）
+- LLM回复中包含 <thinking> 思考过程
 
 流程：
 1. 初始化会话（目标、约束）

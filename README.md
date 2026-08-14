@@ -1,6 +1,6 @@
 # SRC Vulnerability Mining Agent v2 (SRC-VulnMiner)
 
-LLM驱动的端到端Web漏洞挖掘Agent — 参考 vulnclaw 架构重构。
+LLM驱动的端到端Web漏洞挖掘Agent。
 
 ## 架构对比
 

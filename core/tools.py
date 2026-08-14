@@ -1,5 +1,5 @@
 """
-Tools — LLM可调用的工具层（参考 vulnclaw 的 fetch/python_execute 设计）
+Tools — LLM可调用的工具层
 
 工具是LLM的"手"。LLM通过function-calling调用这些工具：
 1. http_request — HTTP请求（硬超时、零重试，绝不死循环）
@@ -253,7 +253,7 @@ class ToolRegistry:
     def python_exec(self, code: str, purpose: str = "") -> str:
         """
         Python execution tool — for data processing, payload construction, etc.
-        Audited and logged (vulnclaw-style). Trusted-local mode.
+        Audited and logged. Trusted-local mode.
         """
         max_output = self.tool_config.get("python_exec", {}).get("max_output_chars", 8000)
 

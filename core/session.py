@@ -1,5 +1,5 @@
 """
-Session — 会话状态持久化（参考 vulnclaw 的 session JSON 设计）
+Session — 会话状态持久化
 
 每个任务一个会话JSON文件，包含：
 - 目标与约束
@@ -38,7 +38,7 @@ class AgentSession:
         self.started_at: str = ""
         self.round: int = 0
 
-        # vulnclaw-style state
+        # Session state
         self.findings: List[Dict[str, Any]] = []
         self.executed_steps: List[str] = []
         self.notes: List[str] = []
@@ -81,7 +81,7 @@ class AgentSession:
     # --- 记录 ---
 
     def record_step(self, action: str, detail: str = "") -> None:
-        """Record an executed step (vulnclaw-style)."""
+        """Record an executed step."""
         entry = action if not detail else f"{action}: {detail[:200]}"
         self.executed_steps.append(entry)
 
@@ -100,7 +100,7 @@ class AgentSession:
         """
         Add a vulnerability finding.
 
-        vulnclaw-style finding schema:
+        Finding schema:
         - title, severity, vuln_type, description
         - evidence, evidence_level (L1=L0+L1, L2=verified)
         - verification_status: pending / verified / failed / skipped

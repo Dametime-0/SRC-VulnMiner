@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 SRC Vulnerability Mining Agent v2 — LLM驱动的漏洞挖掘Agent
-（参考 vulnclaw 架构：LLM主导 + 工具层 + 会话持久化）
+LLM主导 + 工具层 + 会话持久化
 
 ███████╗██████╗  ██████╗    ██╗   ██╗██╗   ██╗██╗     ███╗   ██╗
 ██╔════╝██╔══██╗██╔════╝    ██║   ██║██║   ██║██║     ████╗  ██║
@@ -56,7 +56,7 @@ def load_config(config_path: str = "config.yaml") -> dict:
 
 
 class SRCVulnMiner:
-    """v2: LLM驱动的漏洞挖掘Agent（参考 vulnclaw）。"""
+    """v2: LLM驱动的漏洞挖掘Agent。"""
 
     def __init__(self, config_path: str = "config.yaml"):
         self.config = load_config(config_path)

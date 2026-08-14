@@ -1,5 +1,5 @@
 """
-Constraints — 任务约束管理（参考 vulnclaw 的 task_constraints 设计）
+Constraints — 任务约束管理
 
 约束类型：
 - allowed_hosts / blocked_hosts: 目标主机白名单/黑名单

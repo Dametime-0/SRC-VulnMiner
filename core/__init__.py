@@ -1,5 +1,5 @@
 """
-Core — LLM驱动的Agent核心（参考 vulnclaw 设计）。
+Core — LLM驱动的Agent核心。
 
 与旧版固定Pipeline的本质区别：
 - 旧版：6个模块按固定顺序执行，LLM只是被调用的分析函数
